@@ -1,52 +1,28 @@
-// script.js
+// Fetch product data from the Fake Store API
+fetch('https://fakestoreapi.com/products')
+  .then(response => response.json()) // Convert the response into JSON
+  .then(data => {
+    // Log the data to check if it's being fetched properly
+    console.log(data);
 
-document.addEventListener('DOMContentLoaded', function() {
-    // The URL of the Fake Store API
-    const apiUrl = 'https://fakestoreapi.com/products';
+    // Get the product container element where the products will be displayed
+    const productContainer = document.getElementById('product-container');
 
-    // Fetch the product data
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            displayProducts(data);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-});
+    // Loop through the data and create HTML elements for each product
+    data.forEach(product => {
+      const productCard = document.createElement('div');
+      productCard.classList.add('product-card');  // Add class for styling
 
-// Function to display products on the page
-function displayProducts(products) {
-    const productsContainer = document.getElementById('products-container');
-    productsContainer.innerHTML = ''; // Clear any existing content
+      // Set up the HTML content for each product
+      productCard.innerHTML = `
+        <img src="${product.image}" alt="${product.title}" class="product-image">
+        <h3 class="product-title">${product.title}</h3>
+        <p class="product-price">$${product.price}</p>
+        <button class="view-button">View Details</button>
+      `;
 
-    products.forEach(product => {
-        const productDiv = document.createElement('div');
-        productDiv.classList.add('product');
-
-        // Add product image
-        const productImage = document.createElement('img');
-        productImage.src = product.image;
-        productImage.alt = product.title;
-        productDiv.appendChild(productImage);
-
-        // Add product title
-        const productTitle = document.createElement('h2');
-        productTitle.textContent = product.title;
-        productDiv.appendChild(productTitle);
-
-        // Add product price
-        const productPrice = document.createElement('p');
-        productPrice.textContent = `$${product.price}`;
-        productDiv.appendChild(productPrice);
-
-        // Optionally, add a 'view details' button or other interactivity
-        const viewButton = document.createElement('button');
-        viewButton.textContent = 'View Details';
-        viewButton.onclick = () => alert(`You clicked on ${product.title}`);
-        productDiv.appendChild(viewButton);
-
-        // Append the product to the products container
-        productsContainer.appendChild(productDiv);
+      // Append the product card to the product container
+      productContainer.appendChild(productCard);
     });
-}
+  })
+  .catch(error => console.error('Error fetching products:', error));
