@@ -1,3 +1,6 @@
+/* Import a festive Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&display=swap');
+
 /* General reset */
 * {
   margin: 0;
@@ -18,17 +21,27 @@ body {
 
 /* Header */
 header {
-  background-color: #6fa3ef; /* Soft, magical blue */
-  color: #fff;
+  background-color: #0B6623; /* Christmas green */
+  color: #FFD700; /* Gold for festive contrast */
   width: 100%;
   padding: 20px;
   text-align: center;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Mountains of Christmas', cursive; /* Adds festive font */
 }
 
 header h1 {
-  font-size: 2em;
-  font-weight: bold;
+  font-size: 2.5em;
+  color: #FFD700; /* Gold */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+}
+
+/* Snowflake or sparkle effect */
+header h1:after {
+  content: '❄️'; /* Optional: add a snowflake at the end */
+  margin-left: 8px;
+  font-size: 1em;
 }
 
 #search-bar {
@@ -38,7 +51,7 @@ header h1 {
 #search {
   padding: 10px;
   border-radius: 20px;
-  border: 2px solid #fff;
+  border: 2px solid #FFD700; /* Gold outline */
   width: 80%;
   max-width: 300px;
   font-size: 1em;
@@ -61,52 +74,14 @@ main {
   max-width: 1000px;
 }
 
-.product-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  text-align: center;
-}
-
-.product-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-.product-card h2 {
-  font-size: 1.1em;
-  color: #333;
-  margin-top: 10px;
-}
-
-.product-card p {
-  color: #666;
-  margin: 10px 0;
-}
-
-.product-card button {
-  background-color: #e57373; /* Elf red */
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.product-card button:hover {
-  background-color: #d32f2f;
-}
-
 /* Footer */
 footer {
-  background-color: #6fa3ef;
-  color: #fff;
+  background-color: #0B6623;
+  color: #FFD700;
   width: 100%;
   text-align: center;
   padding: 15px;
   font-size: 0.9em;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Mountains of Christmas', cursive;
 }
