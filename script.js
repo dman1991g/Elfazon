@@ -1,50 +1,62 @@
-// Fetch products from Fake Store API
-fetch('https://fakestoreapi.com/products')
-  .then(response => response.json())
-  .then(data => {
-    displayProducts(data);  // Call function to display products
-  })
-  .catch(error => console.error('Error fetching products:', error));
+// Array to hold fetched products
+let products = [];
+
+// Function to fetch products from the Fake Store API
+async function fetchProducts() {
+  try {
+    const response = await fetch('https://fakestoreapi.com/products');
+    products = await response.json();
+    displayProducts(products); // Display all products initially
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+}
 
 // Function to display products on the page
-function displayProducts(products) {
-  const productContainer = document.getElementById('product-container');
-  
-  // Clear any existing content
-  productContainer.innerHTML = '';
+function displayProducts(filteredProducts) {
+  const container = document.getElementById('product-container');
+  container.innerHTML = '';  // Clear current products
 
-  // Loop through the products and create product elements
-  products.forEach(product => {
-    const productItem = document.createElement('div');
-    productItem.classList.add('product-item');
-    
-    // Product image
-    const productImage = document.createElement('img');
-    productImage.classList.add('product-image');
-    productImage.src = product.image;
-    productItem.appendChild(productImage);
-
-    // Product title
-    const productTitle = document.createElement('h2');
-    productTitle.classList.add('product-title');
-    productTitle.textContent = product.title;
-    productItem.appendChild(productTitle);
-
-    // Product price
-    const productPrice = document.createElement('p');
-    productPrice.classList.add('product-price');
-    productPrice.textContent = `$${product.price}`;
-    productItem.appendChild(productPrice);
-
-    // View Details button
-    const viewDetailsButton = document.createElement('button');
-    viewDetailsButton.textContent = 'View Details';
-    viewDetailsButton.onclick = () => {
-      alert(`You clicked on: ${product.title}`); // Simple interaction for now
-    };
-    productItem.appendChild(viewDetailsButton);
-
-    // Append the product item to the container
-    productContainer.appendChild(productItem);
+  filteredProducts.forEach(product => {
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('product');
+    productDiv.innerHTML = `
+      <img src="${product.image}" alt="${product.title}">
+      <h3>${product.title}</h3>
+      <p>${product.description}</p>
+      <p>Price: $${product.price.toFixed(2)}</p>
+      <button onclick="viewDetails(${product.id})">View Details</button>
+    `;
+    container.appendChild(productDiv);
   });
 }
+
+// Function to filter products based on search query
+function filterProducts() {
+  const searchQuery = document.getElementById('search').value.toLowerCase();
+  const filteredProducts = products.filter(product => {
+    return product.title.toLowerCase().includes(searchQuery) || 
+           product.description.toLowerCase().includes(searchQuery);
+  });
+  displayProducts(filteredProducts);
+}
+
+// Initial function to load all products and set up event listeners
+function init() {
+  fetchProducts(); // Fetch products when the page loads
+
+  // Set up event listener for search bar
+  document.getElementById('search').addEventListener('input', filterProducts);
+}
+
+// Placeholder for handling the "View Details" button click
+function viewDetails(id) {
+  const product = products.find(item => item.id === id);
+  if (product) {
+    alert(`Details for ${product.title}:\n\n${product.description}\nPrice: $${product.price}`);
+    // You could enhance this to show details in a modal or separate page
+  }
+}
+
+// Initialize the app
+init();
