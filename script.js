@@ -38,7 +38,7 @@ function filterProducts() {
     return product.title.toLowerCase().includes(searchQuery) || 
            product.description.toLowerCase().includes(searchQuery);
   });
-  displayProducts(filteredProducts);
+  displayProducts(filteredProducts); // Display filtered products
 }
 
 // Initial function to load all products and set up event listeners
@@ -54,7 +54,6 @@ function viewDetails(id) {
   const product = products.find(item => item.id === id);
   if (product) {
     alert(`Details for ${product.title}:\n\n${product.description}\nPrice: $${product.price}`);
-    // You could enhance this to show details in a modal or separate page
   }
 }
 
