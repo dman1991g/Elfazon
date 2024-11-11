@@ -1,60 +1,73 @@
-// Array to hold fetched products
-let products = [];
+// Your API Key and Custom Search Engine ID
+const apiKey = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA';
+const cseId = 'd345275afe92f4720';  // Your CSE ID
 
-// Function to fetch products from the Fake Store API
-async function fetchProducts() {
+// Function to fetch products from Google Custom Search API
+async function fetchProducts(query) {
+  const searchUrl = `https://www.googleapis.com/customsearch/v1?q=${query}&cx=${cseId}&key=${apiKey}&searchType=image`;
+
   try {
-    const response = await fetch('https://fakestoreapi.com/products');
-    products = await response.json();
-    displayProducts(products); // Display all products initially
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+    
+    if (data.items) {
+      displayProducts(data.items); // Display the products from the search results
+    } else {
+      alert('No results found.');
+    }
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error("Error fetching data:", error);
   }
 }
 
-// Function to display products on the page
-function displayProducts(filteredProducts) {
+// Function to display search results
+function displayProducts(items) {
   const container = document.getElementById('product-container');
-  container.innerHTML = '';  // Clear current products
+  container.innerHTML = '';  // Clear the container before displaying new items
 
-  filteredProducts.forEach(product => {
+  items.forEach(item => {
     const productDiv = document.createElement('div');
     productDiv.classList.add('product');
     productDiv.innerHTML = `
-      <img src="${product.image}" alt="${product.title}">
-      <h3>${product.title}</h3>
-      <p>${product.description}</p>
-      <p>Price: $${product.price.toFixed(2)}</p>
-      <button onclick="viewDetails(${product.id})">View Details</button>
+      <img src="${item.pagemap.cse_image[0].src}" alt="${item.title}" />
+      <h3>${item.title}</h3>
+      <p>${item.snippet}</p>
+      <a href="${item.link}" target="_blank">View on ${getSiteName(item.link)}</a>
     `;
     container.appendChild(productDiv);
   });
 }
 
-// Function to filter products based on search query
-function filterProducts() {
-  const searchQuery = document.getElementById('search').value.toLowerCase();
-  const filteredProducts = products.filter(product => {
-    return product.title.toLowerCase().includes(searchQuery) || 
-           product.description.toLowerCase().includes(searchQuery);
-  });
-  displayProducts(filteredProducts); // Display filtered products
-}
-
-// Initial function to load all products and set up event listeners
-function init() {
-  fetchProducts(); // Fetch products when the page loads
-
-  // Set up event listener for search bar
-  document.getElementById('search').addEventListener('input', filterProducts);
-}
-
-// Placeholder for handling the "View Details" button click
-function viewDetails(id) {
-  const product = products.find(item => item.id === id);
-  if (product) {
-    alert(`Details for ${product.title}:\n\n${product.description}\nPrice: $${product.price}`);
+// Helper function to extract site name from the URL
+function getSiteName(url) {
+  if (url.includes('amazon.com')) {
+    return 'Amazon';
+  } else if (url.includes('walmart.com')) {
+    return 'Walmart';
+  } else if (url.includes('target.com')) {
+    return 'Target';
+  } else {
+    return 'Store';
   }
+}
+
+// Function to handle search input
+function handleSearch() {
+  const searchQuery = document.getElementById('search').value.trim();
+  if (searchQuery) {
+    fetchProducts(searchQuery); // Fetch products based on the search query
+  } else {
+    alert('Please enter a search term');
+  }
+}
+
+// Set up the event listener for the search input field
+document.getElementById('search').addEventListener('input', handleSearch);
+
+// Initialize the app (optionally fetch products on page load)
+function init() {
+  // Optionally: Fetch popular products when the page loads or show placeholder
+  // fetchProducts('toys'); // Example: Initial search term, you can modify it
 }
 
 // Initialize the app
