@@ -17,23 +17,7 @@
 
   <main>
     <section id="product-results">
-      <!-- Elf-themed default products before search -->
-      <div class="product-item">
-        <h3><a href="https://www.amazon.com/dp/B07X2FZ9X9" target="_blank">Sparkle Legos</a></h3>
-        <p>Build your very own sparkle castle with magical Legos!</p>
-        <img src="sparkle-legos.jpg" alt="Sparkle Legos" width="100">
-      </div>
-      <div class="product-item">
-        <h3><a href="https://www.target.com/p/ninjago-legos" target="_blank">Elf Sword Set</a></h3>
-        <p>Defend the magical kingdom with an enchanted sword!</p>
-        <img src="elf-sword-set.jpg" alt="Elf Sword Set" width="100">
-      </div>
-      <div class="product-item">
-        <h3><a href="https://www.walmart.com/ip/Fairy-Doll-Set" target="_blank">Fairy Doll Set</a></h3>
-        <p>Bring your elf friends to life with these fairy dolls!</p>
-        <img src="fairy-doll-set.jpg" alt="Fairy Doll Set" width="100">
-      </div>
-      <!-- More elf-themed products can go here... -->
+      <!-- Results will be dynamically inserted here -->
     </section>
   </main>
 
@@ -42,5 +26,20 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')  // Make sure sw.js is in the root directory
+          .then((registration) => {
+            console.log('Service Worker registered with scope: ', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Service Worker registration failed: ', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
