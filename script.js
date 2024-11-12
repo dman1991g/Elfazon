@@ -1,62 +1,68 @@
-// API Key and CSE ID
-const apiKey = "AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA";
-const cseId = "d345275afe92f4720";
+// Your API key and Custom Search Engine (CSE) ID
+const API_KEY = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA';
+const CSE_ID = 'd345275afe92f4720';
 
-// Function to search products using Google Custom Search
-async function searchProducts(query) {
-  const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${cseId}`;
-
+// Function to fetch search results
+async function fetchProducts(query) {
   try {
-    const response = await fetch(url);
+    const response = await fetch(
+      `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}&searchType=image`
+    );
     const data = await response.json();
 
-    // Check if results were returned
-    if (data.items) {
+    if (data.items && data.items.length > 0) {
       displayProducts(data.items);
     } else {
-      displayError("No products found. Please try another search.");
+      displayNoResults();
     }
   } catch (error) {
-    displayError("Error occurred while fetching products.");
+    console.error("Error occurred while fetching products:", error);
+    displayError();
   }
 }
 
-// Function to display products on the page
+// Function to display search results
 function displayProducts(products) {
-  const container = document.getElementById("product-container");
-  container.innerHTML = ""; // Clear any previous results
+  const container = document.getElementById('product-container');
+  container.innerHTML = ''; // Clear previous results
 
   products.forEach(product => {
-    const productDiv = document.createElement("div");
-    productDiv.classList.add("product");
-
-    const imgSrc = product.pagemap?.cse_image?.[0]?.src || 'default-image.jpg';
-    const productTitle = product.title;
-    const productLink = product.link;
-
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('product');
     productDiv.innerHTML = `
-      <a href="${productLink}" target="_blank">
-        <img src="${imgSrc}" alt="${productTitle}" />
-        <h3>${productTitle}</h3>
-      </a>
+      <img src="${product.link}" alt="${product.title}">
+      <h3>${product.title}</h3>
+      <p>${product.snippet}</p>
+      <a href="${product.image.contextLink}" target="_blank">View on Store</a>
     `;
-
     container.appendChild(productDiv);
   });
 }
 
-// Function to display an error message
-function displayError(message) {
-  const container = document.getElementById("product-container");
-  container.innerHTML = `<p>${message}</p>`;
+// Function to display "no results" message
+function displayNoResults() {
+  const container = document.getElementById('product-container');
+  container.innerHTML = '<p>No products found. Try searching again.</p>';
 }
 
-// Event listener for search input
-document.getElementById("search").addEventListener("input", (event) => {
-  const query = event.target.value.trim();
+// Function to display error message
+function displayError() {
+  const container = document.getElementById('product-container');
+  container.innerHTML = '<p>Error occurred while fetching products. Please try again later.</p>';
+}
+
+// Function to handle search input
+function handleSearch() {
+  const query = document.getElementById('search').value;
   if (query) {
-    searchProducts(query);
-  } else {
-    displayError("Please enter a search term.");
+    fetchProducts(query);
   }
-});
+}
+
+// Initial function to set up event listener
+function init() {
+  document.getElementById('search').addEventListener('input', handleSearch);
+}
+
+// Initialize the app
+init();
