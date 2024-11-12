@@ -1,68 +1,47 @@
-// Your API key and Custom Search Engine (CSE) ID
-const API_KEY = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA';
-const CSE_ID = 'd345275afe92f4720';
+// Replace with your actual API key and CSE ID
+const API_KEY = "AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA";
+const CSE_ID = "d345275afe92f4720";
 
 // Function to fetch search results
 async function fetchProducts(query) {
   try {
     const response = await fetch(
-      `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}&searchType=image`
+      `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`
     );
     const data = await response.json();
-
-    if (data.items && data.items.length > 0) {
+    if (data.items) {
       displayProducts(data.items);
     } else {
-      displayNoResults();
+      document.getElementById('product-container').innerHTML = "<p>No products found</p>";
     }
   } catch (error) {
-    console.error("Error occurred while fetching products:", error);
-    displayError();
+    console.error("Error fetching products:", error);
+    document.getElementById('product-container').innerHTML = "<p>Error fetching products</p>";
   }
 }
 
-// Function to display search results
+// Function to display products on the page
 function displayProducts(products) {
   const container = document.getElementById('product-container');
-  container.innerHTML = ''; // Clear previous results
+  container.innerHTML = ''; // Clear current products
 
   products.forEach(product => {
     const productDiv = document.createElement('div');
     productDiv.classList.add('product');
     productDiv.innerHTML = `
-      <img src="${product.link}" alt="${product.title}">
+      <img src="${product.pagemap?.cse_image?.[0]?.src || 'placeholder.jpg'}" alt="${product.title}">
       <h3>${product.title}</h3>
       <p>${product.snippet}</p>
-      <a href="${product.image.contextLink}" target="_blank">View on Store</a>
+      <a href="${product.link}" target="_blank">View Product</a>
     `;
     container.appendChild(productDiv);
   });
 }
 
-// Function to display "no results" message
-function displayNoResults() {
-  const container = document.getElementById('product-container');
-  container.innerHTML = '<p>No products found. Try searching again.</p>';
-}
-
-// Function to display error message
-function displayError() {
-  const container = document.getElementById('product-container');
-  container.innerHTML = '<p>Error occurred while fetching products. Please try again later.</p>';
-}
-
-// Function to handle search input
-function handleSearch() {
-  const query = document.getElementById('search').value;
+// Set up event listener for search
+document.getElementById('search').addEventListener('input', (event) => {
+  const query = event.target.value;
   if (query) {
     fetchProducts(query);
   }
-}
-
-// Initial function to set up event listener
-function init() {
-  document.getElementById('search').addEventListener('input', handleSearch);
-}
-
-// Initialize the app
-init();
+});
