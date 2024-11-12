@@ -1,11 +1,9 @@
-// API Key and Custom Search Engine ID
 const apiKey = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA';
 const cseId = 'd345275afe92f4720';
 
-// Function to initiate product search
+// Function to search products
 function searchProducts() {
   const query = document.getElementById('search-bar').value;
-
   if (query) {
     fetchProducts(query);
   } else {
@@ -22,15 +20,14 @@ async function fetchProducts(query) {
     const data = await response.json();
 
     // Clear any previous results
-    const productResults = document.getElementById('product-results');
-    productResults.innerHTML = '';
+    document.getElementById('product-results').innerHTML = '';
 
     if (data.items) {
       data.items.forEach(item => {
         displayProduct(item);
       });
     } else {
-      productResults.innerHTML = 'No products found.';
+      document.getElementById('product-results').innerHTML = 'No products found.';
     }
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -44,13 +41,11 @@ function displayProduct(item) {
   const productDiv = document.createElement('div');
   productDiv.classList.add('product-item');
 
-  // Creating product HTML structure
   productDiv.innerHTML = `
     <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
     <p>${item.snippet}</p>
     <img src="${item.pagemap?.cse_image?.[0]?.src || ''}" alt="${item.title}" width="100">
   `;
 
-  // Append product to results container
   productContainer.appendChild(productDiv);
 }
