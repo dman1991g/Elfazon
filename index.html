@@ -3,33 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elfazon - The Elf's Magic Shop</title>
+  <title>Elfazon - Magical Shopping</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <!-- Header with title and search bar -->
   <header>
-    <h1>Elfazon - The Elf's Magic Shop</h1>
-    <div id="search-bar">
-      <input type="text" id="search" placeholder="Search for magical items..." />
-      <button id="search-button">Search</button>
+    <h1>Elfazon - Magical Shopping</h1>
+    <div id="search-container">
+      <input type="text" id="search-bar" placeholder="Search for magical items..." />
+      <button onclick="searchProducts()">Search</button>
     </div>
   </header>
 
-  <!-- Main section to display products -->
   <main>
-    <section id="product-container" class="product-grid">
-      <!-- Product items will be dynamically inserted here by JavaScript -->
+    <section id="product-results">
+      <!-- Results will be dynamically inserted here -->
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
-    <p>Happy Shopping at Elfazon! Magical items just a wish away.</p>
+    <p>Happy shopping at Elfazon!</p>
   </footer>
 
-  <!-- Link to JavaScript file -->
   <script src="script.js"></script>
 </body>
 </html>
