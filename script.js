@@ -1,51 +1,68 @@
-// Function to search products using the Google Custom Search API
-async function searchProducts(query) {
-  const searchUrl = `https://www.googleapis.com/customsearch/v1?q=${query}&key=AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA&cx=d345275afe92f4720`;
+// Array to hold fetched products
+let products = [];
+
+// Function to fetch products from Google Custom Search API
+async function fetchProduct(searchQuery) {
+  const apiKey = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA'; // Your API Key
+  const cseId = 'd345275afe92f4720'; // Your CSE ID
+  const searchUrl = `https://www.googleapis.com/customsearch/v1?q=${searchQuery}&key=${apiKey}&cx=${cseId}`;
 
   try {
-    console.log('Search query:', query);  // Log the search query to see what is being searched
     const response = await fetch(searchUrl);
+
+    // Check if the response is okay (status code 200)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const data = await response.json();
 
-    console.log('API response:', data);  // Log the response to see what the API is returning
-
-    // Check if items are returned
-    if (data.items && data.items.length > 0) {
-      displayProducts(data.items);
+    // Check if products are found
+    if (data.items) {
+      products = data.items;
+      displayProducts(products);
     } else {
-      console.log('No products found for', query);  // Log when no products are found
-      alert('No products found');
+      alert("No products found for your search.");
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
-    alert('An error occurred while fetching products');
+    console.error("Error occurred while fetching product:", error);
+    alert("Error occurred while fetching product. Please try again later.");
   }
 }
 
-// Function to display the products on the page
-function displayProducts(products) {
+// Function to display products on the page
+function displayProducts(filteredProducts) {
   const container = document.getElementById('product-container');
-  container.innerHTML = '';  // Clear any existing products
+  container.innerHTML = '';  // Clear current products
 
-  products.forEach(product => {
+  filteredProducts.forEach(product => {
     const productDiv = document.createElement('div');
     productDiv.classList.add('product');
     productDiv.innerHTML = `
       <img src="${product.pagemap.cse_image[0].src}" alt="${product.title}">
       <h3>${product.title}</h3>
       <p>${product.snippet}</p>
-      <a href="${product.link}" target="_blank">Buy Now</a>
+      <a href="${product.link}" target="_blank">View Product</a>
     `;
     container.appendChild(productDiv);
   });
 }
 
-// Event listener for the search bar
-document.getElementById('search').addEventListener('input', (e) => {
-  const query = e.target.value.trim();
-  if (query.length > 0) {
-    searchProducts(query);  // Search for products based on input
+// Function to filter products based on search query
+function filterProducts() {
+  const searchQuery = document.getElementById('search').value.trim();
+  if (searchQuery.length >= 3) { // Start searching after 3 characters
+    fetchProduct(searchQuery); // Fetch products when search query is valid
   } else {
-    document.getElementById('product-container').innerHTML = '';  // Clear the product display if search is empty
+    alert("Please enter at least 3 characters to search.");
   }
-});
+}
+
+// Initial function to load all products and set up event listeners
+function init() {
+  // Set up event listener for search bar
+  document.getElementById('search').addEventListener('input', filterProducts);
+}
+
+// Initialize the app
+init();
