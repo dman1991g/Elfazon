@@ -9,6 +9,8 @@ async function fetchProducts(query) {
       `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(query)}`
     );
     const data = await response.json();
+    console.log(data); // Log API response to the page (for debugging)
+    
     if (data.items) {
       displayProducts(data.items);
     } else {
