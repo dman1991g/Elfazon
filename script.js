@@ -1,83 +1,51 @@
-// Array to hold fetched products
-let products = [];
+// Function to search products using the Google Custom Search API
+async function searchProducts(query) {
+  const searchUrl = `https://www.googleapis.com/customsearch/v1?q=${query}&key=AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA&cx=d345275afe92f4720`;
 
-// Your provided API key and CSE ID
-const API_KEY = 'AIzaSyCVMu_wlh_fWOugBr4LJ8fOALFVZZ75NvA';
-const CSE_ID = 'd345275afe92f4720';
-
-// Function to display errors or logs on the page
-function displayError(message) {
-  const container = document.getElementById('product-container');
-  container.innerHTML = `<p style="color: red;">Error: ${message}</p>`;
-}
-
-// Function to fetch products using Google Custom Search API
-async function fetchProducts(query) {
   try {
-    const response = await fetch(`https://www.googleapis.com/customsearch/v1?q=${query}&key=${API_KEY}&cx=${CSE_ID}`);
+    console.log('Search query:', query);  // Log the search query to see what is being searched
+    const response = await fetch(searchUrl);
     const data = await response.json();
-    
-    // Check if there are items in the response
-    if (data.items) {
-      products = data.items;
-      displayProducts(products); // Display the products
+
+    console.log('API response:', data);  // Log the response to see what the API is returning
+
+    // Check if items are returned
+    if (data.items && data.items.length > 0) {
+      displayProducts(data.items);
     } else {
-      displayError('No products found for your search.');
+      console.log('No products found for', query);  // Log when no products are found
+      alert('No products found');
     }
   } catch (error) {
-    displayError('Error fetching products: ' + error.message);
+    console.error('Error fetching data:', error);
+    alert('An error occurred while fetching products');
   }
 }
 
-// Function to display products on the page
-function displayProducts(filteredProducts) {
+// Function to display the products on the page
+function displayProducts(products) {
   const container = document.getElementById('product-container');
-  container.innerHTML = '';  // Clear current products
+  container.innerHTML = '';  // Clear any existing products
 
-  // Check if there are products to display
-  if (filteredProducts.length === 0) {
-    container.innerHTML = '<p>No products found.</p>';
-  } else {
-    filteredProducts.forEach(product => {
-      const productDiv = document.createElement('div');
-      productDiv.classList.add('product');
-      productDiv.innerHTML = `
-        <img src="${product.pagemap.cse_image ? product.pagemap.cse_image[0].src : ''}" alt="${product.title}">
-        <h3>${product.title}</h3>
-        <p>${product.snippet}</p>
-        <p><a href="${product.link}" target="_blank">Buy Now</a></p>  <!-- Link to product -->
-      `;
-      container.appendChild(productDiv);
-    });
-  }
-}
-
-// Function to filter products based on search query
-function filterProducts() {
-  const searchQuery = document.getElementById('search').value.trim();
-  
-  // Ensure there's a query before fetching products
-  if (searchQuery && products.length === 0) {
-    displayError('No products loaded yet.');
-    return; // Do nothing if no products are fetched yet
-  }
-
-  // Filter products based on search query
-  const filteredProducts = products.filter(product => {
-    return product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           product.snippet.toLowerCase().includes(searchQuery.toLowerCase());
+  products.forEach(product => {
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('product');
+    productDiv.innerHTML = `
+      <img src="${product.pagemap.cse_image[0].src}" alt="${product.title}">
+      <h3>${product.title}</h3>
+      <p>${product.snippet}</p>
+      <a href="${product.link}" target="_blank">Buy Now</a>
+    `;
+    container.appendChild(productDiv);
   });
-
-  displayProducts(filteredProducts);  // Display filtered products
 }
 
-// Initial function to load products and set up event listeners
-function init() {
-  fetchProducts('toys'); // Fetch products with a default query when the page loads
-
-  // Set up event listener for the search bar
-  document.getElementById('search').addEventListener('input', filterProducts);
-}
-
-// Initialize the app
-init();
+// Event listener for the search bar
+document.getElementById('search').addEventListener('input', (e) => {
+  const query = e.target.value.trim();
+  if (query.length > 0) {
+    searchProducts(query);  // Search for products based on input
+  } else {
+    document.getElementById('product-container').innerHTML = '';  // Clear the product display if search is empty
+  }
+});
