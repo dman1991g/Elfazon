@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Product Requests</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input { padding: 10px; margin: 10px; width: 80%; max-width: 300px; }
+        button { padding: 10px; cursor: pointer; }
+        iframe { width: 100%; height: 500px; border: none; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <h2>Check Your Product Requests</h2>
+    <input type="email" id="emailInput" placeholder="Enter your email">
+    <button onclick="checkRequests()">Check Requests</button>
+    <iframe id="requestFrame"></iframe>
+
+    <script>
+        function checkRequests() {
+            var email = document.getElementById("emailInput").value;
+            if (email) {
+                document.getElementById("requestFrame").src = "YOUR_WEB_APP_URL?email=" + encodeURIComponent(email);
+            } else {
+                alert("Please enter your email.");
+            }
+        }
+    </script>
+
+</body>
+</html>
