@@ -18,7 +18,8 @@
     <button onclick="checkRequests()">Check Requests</button>
     <iframe id="requestFrame"></iframe>
 
-    function checkRequests() {
+    <script>
+     function checkRequests() {
     var email = document.getElementById("emailInput").value;
     if (email) {
         var scriptURL = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec";
@@ -27,6 +28,7 @@
         alert("Please enter your email.");
     }
 }
+  </script>
 
 </body>
 </html>
