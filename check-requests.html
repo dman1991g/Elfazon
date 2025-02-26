@@ -23,7 +23,17 @@
     var email = document.getElementById("emailInput").value;
     if (email) {
         var scriptURL = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec";
-        document.getElementById("requestFrame").src = scriptURL + "?email=" + encodeURIComponent(email);
+        var fullURL = scriptURL + "?email=" + encodeURIComponent(email);
+
+        alert("Loading: " + fullURL); // Show the full URL being loaded
+
+        var frame = document.getElementById("requestFrame");
+        if (frame) {
+            frame.src = fullURL;
+            alert("iFrame updated!");
+        } else {
+            alert("Error: requestFrame not found.");
+        }
     } else {
         alert("Please enter your email.");
     }
