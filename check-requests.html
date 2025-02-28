@@ -21,8 +21,7 @@
     Your product request details will appear here.
 </div>
 
-    <script>
-     function checkRequests() {
+    <function checkRequests() {
     var email = document.getElementById("emailInput").value;
     if (email) {
         fetch("https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec?email=" + encodeURIComponent(email), {
