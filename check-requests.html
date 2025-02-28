@@ -16,7 +16,12 @@
     <h2>Check Your Product Requests</h2>
     <input type="email" id="emailInput" placeholder="Enter your email">
     <button onclick="checkRequests()">Check Requests</button>
-    <iframe id="requestFrame"></iframe>
+    <input type="email" id="emailInput" placeholder="Enter your email">
+<button onclick="checkRequests()">Check Requests</button>
+
+<div id="requestResults"> <!-- This will show the response -->
+    Your product request details will appear here.
+</div>
 
     <script>
      function checkRequests() {
@@ -25,15 +30,14 @@
         var scriptURL = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec";
         var fullURL = scriptURL + "?email=" + encodeURIComponent(email);
 
-        alert("Loading: " + fullURL); // Show the full URL being loaded
-
-        var frame = document.getElementById("requestFrame");
-        if (frame) {
-            frame.src = fullURL;
-            alert("iFrame updated!");
-        } else {
-            alert("Error: requestFrame not found.");
-        }
+        fetch(fullURL)
+            .then(response => response.text()) // Convert response to text
+            .then(data => {
+                document.getElementById("requestResults").innerHTML = data; // Display result inside div
+            })
+            .catch(error => {
+                document.getElementById("requestResults").innerHTML = "Error: " + error;
+            });
     } else {
         alert("Please enter your email.");
     }
