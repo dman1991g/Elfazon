@@ -25,17 +25,17 @@
      function checkRequests() {
     var email = document.getElementById("emailInput").value;
     if (email) {
-        var scriptURL = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec";
-        var fullURL = scriptURL + "?email=" + encodeURIComponent(email);
-
-        fetch(fullURL)
-            .then(response => response.text()) // Convert response to text
-            .then(data => {
-                document.getElementById("requestResults").innerHTML = data; // Display result inside div
-            })
-            .catch(error => {
-                document.getElementById("requestResults").innerHTML = "Error: " + error;
-            });
+        fetch("https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec?email=" + encodeURIComponent(email), {
+            method: "GET",
+            headers: {
+                "Content-Type": "text/html"
+            }
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("resultsContainer").innerHTML = data;
+        })
+        .catch(error => console.error("Error fetching data:", error));
     } else {
         alert("Please enter your email.");
     }
