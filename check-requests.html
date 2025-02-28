@@ -24,34 +24,30 @@
   <script>
 function checkRequests() {
     var email = document.getElementById("emailInput").value;
-    var debugOutput = document.getElementById("debugOutput"); // Debug area
-
-    debugOutput.innerHTML = "Starting request..."; // Should appear immediately
-
-    if (email) {
-        var url = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec
-        debugOutput.innerHTML += "<br>Fetching: " + url;
-
-        fetch(url)
-        .then(response => {
-            debugOutput.innerHTML += "<br>Response received.";
-
-            if (!response.ok) {
-                throw new Error("Network response was not ok: " + response.statusText);
-            }
-            return response.text();
-        })
-        .then(data => {
-            document.getElementById("requestFrame").srcdoc = data;
-            debugOutput.innerHTML += "<br>Success!";
-        })
-        .catch(error => {
-            debugOutput.innerHTML += "<br>Error: " + error.message;
-        });
-
-    } else {
-        debugOutput.innerHTML += "<br>Please enter your email.";
+    if (!email) {
+        alert("Please enter your email.");
+        return;
     }
+
+    var url = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec?email=" + encodeURIComponent(email);
+
+    fetch(url, {
+        method: "GET",
+        mode: "cors",
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        return response.text();
+    })
+    .then(data => {
+        document.getElementById("requestFrame").innerHTML = data; // Display results in a div instead of iframe
+    })
+    .catch(error => {
+        console.error("Fetch error:", error);
+        document.getElementById("requestFrame").innerHTML = "<p style='color: red;'>Failed to load data. Check console for details.</p>";
+    });
 }
   </script>
 
