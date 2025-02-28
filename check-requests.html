@@ -23,30 +23,37 @@
 <div id="debugOutput" style="color: red; font-weight: bold;"></div>
   <script>
 function checkRequests() {
+    alert("Function started!"); // Step 1: Check if function is called
+
     var email = document.getElementById("emailInput").value;
+    var outputDiv = document.getElementById("requestFrame"); 
+    outputDiv.innerHTML = ""; 
+
     if (!email) {
-        alert("Please enter your email.");
+        alert("No email entered!"); // Step 2: Check if input is empty
+        outputDiv.innerHTML = "<p style='color: red;'>Please enter your email.</p>";
         return;
     }
 
+    alert("Fetching data for: " + email); // Step 3: Confirm email is captured
+
     var url = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/exec?email=" + encodeURIComponent(email);
 
-    fetch(url, {
-        method: "GET",
-        mode: "cors",
-    })
+    fetch(url, { method: "GET", mode: "cors" })
     .then(response => {
+        alert("Fetch response received!"); // Step 4: Confirm fetch is returning a response
         if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Network response was not ok. Status: " + response.status);
         }
         return response.text();
     })
     .then(data => {
-        document.getElementById("requestFrame").innerHTML = data; // Display results in a div instead of iframe
+        alert("Data received!"); // Step 5: Confirm data is being processed
+        outputDiv.innerHTML = `<p style='color: green;'>Success! Data loaded.</p>` + data;
     })
     .catch(error => {
-        console.error("Fetch error:", error);
-        document.getElementById("requestFrame").innerHTML = "<p style='color: red;'>Failed to load data. Check console for details.</p>";
+        alert("Error: " + error.message); // Step 6: Show error if any
+        outputDiv.innerHTML = `<p style='color: red;'>Error: ${error.message}</p>`;
     });
 }
   </script>
