@@ -24,37 +24,44 @@
 <div id="debugOutput" style="color: red; font-weight: bold;"></div>
   <script>
 function checkRequests() {
-    alert("Function started!"); // Step 1: Check if function is called
-
     var email = document.getElementById("emailInput").value;
-    var outputDiv = document.getElementById("requestFrame"); 
-    outputDiv.innerHTML = ""; 
-
     if (!email) {
-        alert("No email entered!"); // Step 2: Check if input is empty
-        outputDiv.innerHTML = "<p style='color: red;'>Please enter your email.</p>";
+        alert("Please enter your email.");
         return;
     }
 
-    alert("Fetching data for: " + email); // Step 3: Confirm email is captured
+    var url = `https://script.google.com/macros/s/AKfycbzDvsjVhCCWMvpCxjxuRHhHkxExFmQmpvBwVzAiFx_10EWmeCx48qLKPng9BQ5wf48N8w/exec?email=${encodeURIComponent(email)}`;
 
-    var url = "https://script.google.com/macros/s/AKfycbzDvsjVhCCWMvpCxjxuRHhHkxExFmQmpvBwVzAiFx_10EWmeCx48qLKPng9BQ5wf48N8w/exec" + encodeURIComponent(email);
-
-    fetch(url, { method: "GET", mode: "cors" })
+    fetch(url)
     .then(response => {
-        alert("Fetch response received!"); // Step 4: Confirm fetch is returning a response
         if (!response.ok) {
-            throw new Error("Network response was not ok. Status: " + response.status);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.text();
+        return response.json();
     })
     .then(data => {
-        alert("Data received!"); // Step 5: Confirm data is being processed
-        outputDiv.innerHTML = `<p style='color: green;'>Success! Data loaded.</p>` + data;
+        console.log("Response data:", data);
+        let outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = ""; // Clear previous results
+        
+        if (data.results.length === 0) {
+            outputDiv.innerHTML = "<p>No products found.</p>";
+        } else {
+            data.results.forEach(item => {
+                let linkElement = document.createElement("a");
+                linkElement.href = item.link;
+                linkElement.target = "_blank"; // Open in a new tab
+                linkElement.innerText = item.product || "View Product";
+                
+                let listItem = document.createElement("p");
+                listItem.appendChild(linkElement);
+                outputDiv.appendChild(listItem);
+            });
+        }
     })
     .catch(error => {
-        alert("Error: " + error.message); // Step 6: Show error if any
-        outputDiv.innerHTML = `<p style='color: red;'>Error: ${error.message}</p>`;
+        console.error("Fetch error:", error);
+        alert("Failed to load data.");
     });
 }
   </script>
