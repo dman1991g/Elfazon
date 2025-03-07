@@ -45,7 +45,7 @@ function checkRequests() {
     })
     .then(data => {
         alert("Data received: " + JSON.stringify(data)); // Debugging alert
-        let outputDiv = document.getElementById("output");
+        let outputDiv = document.getElementById("output").innerHTML=data;
         outputDiv.innerHTML = ""; // Clear previous results
         
         if (!data.results || data.results.length === 0) {
