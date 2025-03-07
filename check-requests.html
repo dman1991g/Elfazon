@@ -38,7 +38,7 @@ function checkRequests() {
 
     alert("Fetching data for: " + email); // Step 3: Confirm email is captured
 
-    var url = "https://script.google.com/macros/s/AKfycbyQLZ0lV9Twv8sAjgGh6jnrrIGNfR2pzvgcbAxashyISaI1oRIxRVNu9J7US06rdtTD7A/execemail=" + encodeURIComponent(email);
+    var url = "https://script.google.com/macros/s/AKfycbzDvsjVhCCWMvpCxjxuRHhHkxExFmQmpvBwVzAiFx_10EWmeCx48qLKPng9BQ5wf48N8w/exec" + encodeURIComponent(email);
 
     fetch(url, { method: "GET", mode: "cors" })
     .then(response => {
