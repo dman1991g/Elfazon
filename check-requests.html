@@ -32,19 +32,22 @@ function checkRequests() {
 
     var url = `https://script.google.com/macros/s/AKfycbzDvsjVhCCWMvpCxjxuRHhHkxExFmQmpvBwVzAiFx_10EWmeCx48qLKPng9BQ5wf48N8w/exec?email=${encodeURIComponent(email)}`;
 
+    alert("Fetching data from: " + url); // Debugging alert
+
     fetch(url)
     .then(response => {
+        alert("Received response: " + response.status); // Show status code
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
-        console.log("Response data:", data);
+        alert("Data received: " + JSON.stringify(data)); // Debugging alert
         let outputDiv = document.getElementById("output");
         outputDiv.innerHTML = ""; // Clear previous results
         
-        if (data.results.length === 0) {
+        if (!data.results || data.results.length === 0) {
             outputDiv.innerHTML = "<p>No products found.</p>";
         } else {
             data.results.forEach(item => {
@@ -60,8 +63,7 @@ function checkRequests() {
         }
     })
     .catch(error => {
-        console.error("Fetch error:", error);
-        alert("Failed to load data.");
+        alert("Fetch error: " + error.message); // Show exact error message
     });
 }
   </script>
