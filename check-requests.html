@@ -45,17 +45,22 @@ function checkRequests() {
     })
     .then(data => {
         alert("Data received: " + JSON.stringify(data)); // Debugging alert
+        
         let outputDiv = document.getElementById("output");
         outputDiv.innerHTML = ""; // Clear previous results
         
         if (!data.results || data.results.length === 0) {
             outputDiv.innerHTML = "<p>No products found.</p>";
         } else {
+            // Loop through the results and display product links
             data.results.forEach(item => {
+                let productLink = item[4]; // Assuming product link is at index 3
+                let productName = item[3]; // Assuming product name is at index 2
+
                 let linkElement = document.createElement("a");
-                linkElement.href = item.link;
+                linkElement.href = productLink;
                 linkElement.target = "_blank"; // Open in a new tab
-                linkElement.innerText = item.product || "View Product";
+                linkElement.innerText = productName || "View Product"; // Default text if product name is missing
                 
                 let listItem = document.createElement("p");
                 listItem.appendChild(linkElement);
