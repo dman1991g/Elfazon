@@ -9,38 +9,37 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* Body styling */
+/* Body styling with summer gradient */
 body {
-  background-color: #f0f8ff; /* Light snowy blue */
+  background: linear-gradient(to bottom right, #e0f7e9, #d0f0ff); /* Mint to sky blue */
   color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  justify-content: space-between; /* Ensure content doesn't overflow */
+  justify-content: space-between;
 }
 
 /* Header */
 header {
-  background-color: #0B6623; /* Christmas green */
-  color: #FFD700; /* Gold for festive contrast */
+  background-color: #0B6623; /* Forest green */
+  color: #FFD700; /* Sunshine yellow */
   width: 100%;
   padding: 20px;
   text-align: center;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Mountains of Christmas', cursive; /* Adds festive font */
+  font-family: 'Mountains of Christmas', cursive;
 }
 
 header h1 {
   font-size: 2.5em;
-  color: #FFD700; /* Gold */
+  color: #FFD700;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 2px;
 }
 
-/* Snowflake or sparkle effect */
 header h1:after {
-  content: '❄️'; /* Optional: add a snowflake at the end */
+  content: '✨'; /* Magical sparkle for summer */
   margin-left: 8px;
   font-size: 1em;
 }
@@ -52,10 +51,12 @@ header h1:after {
 #search {
   padding: 10px;
   border-radius: 20px;
-  border: 2px solid #FFD700; /* Gold outline */
+  border: 2px solid #FFD700;
   width: 80%;
   max-width: 300px;
   font-size: 1em;
+  background-color: #fffef0;
+  box-shadow: 0px 0px 6px rgba(255, 215, 0, 0.4);
 }
 
 /* Main product section */
@@ -69,15 +70,15 @@ main {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ensure cards fill space */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 1000px;
   padding: 10px;
-  margin: 0 auto; /* Center grid */
+  margin: 0 auto;
 }
 
-/* Product card styling */
+/* Product card styling (unchanged) */
 .product-card {
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -89,7 +90,7 @@ main {
 }
 
 .product-card:hover {
-  transform: scale(1.05); /* Hover effect for cards */
+  transform: scale(1.05);
 }
 
 .product-image {
@@ -105,20 +106,23 @@ main {
 
 .product-price {
   font-size: 1em;
-  color: #0B6623; /* Christmas green */
+  color: #0B6623;
 }
 
+/* Summer-styled buttons */
 .view-button {
-  background-color: #FFD700; /* Gold */
+  background-color: #FFEB99; /* Light pastel yellow */
+  color: #0B6623;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .view-button:hover {
-  background-color: #0B6623; /* Dark green on hover */
+  background-color: #A0E7E5; /* Teal/mint hover */
+  color: #333;
 }
 
 /* Footer */
