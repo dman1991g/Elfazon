@@ -7,7 +7,16 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.json">
-  </head>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F5Z90ZKV93"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-F5Z90ZKV93');
+  </script>
+</head>
 <body>
   <header>
     <h1>Elfazon - Magical Shopping</h1>
@@ -37,28 +46,29 @@
       </div>
     </section>
     <a href="https://forms.gle/Rqrz8b9DgvpvaPrK8" target="_blank">
-    <button>Request a Product</button>
+      <button>Request a Product</button>
+    </a>
     <a href="check-requests.html">
-    <button>Check My Requests</button>
-</a>
+      <button>Check My Requests</button>
+    </a>
   </main>
 
   <footer>
     <h4>Happy shopping at Elfazon!</h4>
-    <p>This site uses amazon affiliate links and I might make a commision from any purchases made.</p>
+    <p>This site uses amazon affiliate links and I might make a commission from any purchases made.</p>
   </footer>
 
   <script src="script.js"></script>
   <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(registration => {
-        console.log('Service Worker registered with scope:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Service Worker registration failed:', error);
-      });
-  }
-</script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  </script>
 </body>
 </html>
